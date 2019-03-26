@@ -1,0 +1,96 @@
+#include "pch.h"
+#include  <iostream>
+
+using namespace std;
+
+struct listElement {
+	int value;
+	listElement *next;
+};
+
+class List {
+private:
+	listElement *head;
+
+public:
+	List() {
+		head = NULL;
+	}
+	void pushFront(int value) {
+		listElement *elem1;
+		elem1 = new listElement;
+		elem1->value = value;
+		elem1->next = head;
+		head = elem1;
+	}
+
+	void pushBack(int value) {
+		listElement *el1, *el2;
+		el2 = new listElement;
+		el2->next = NULL;
+		el2->value = value;
+		el1 = head;
+		if (el1) {
+			while (el1->next) {
+				el1 = el1->next;
+			}
+			el1->next = el2;
+		}
+		else {
+			head = el2;
+		}
+		
+	}
+
+	void printList() {
+		listElement *it = head;
+		for (int i = 0; it; it = it->next) {
+			cout << it->value << endl;
+		}
+	}
+
+	void removeFront() {
+		listElement *el1 = head;
+		if (el1) {
+			head = el1->next;
+			delete el1;
+		}
+	}
+
+	void removeBack() {
+		listElement *el1 = head;
+		if (el1) {
+			if (el1->next) {
+				while (el1->next->next) {
+					el1 = el1->next;
+				}
+				delete el1->next;
+				el1->next = NULL;
+			}
+		}
+	}
+
+	int listSize() {
+		int counter = 0;
+		listElement *it = head;
+		while (it) {
+			it = it->next;
+			counter++;
+		}
+
+		return counter;
+	}
+};
+
+int main() {
+	List list;
+
+	list.pushBack(56);
+	list.pushFront(10);
+	list.pushFront(34);
+	list.removeFront();
+	list.removeBack();
+	list.printList();
+	cout << list.listSize() << endl;
+	system("pause");
+}

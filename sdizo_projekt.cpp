@@ -1,52 +1,59 @@
-﻿// sdizo_projekt.cpp : Ten plik zawiera funkcję „main”. W nim rozpoczyna się i kończy wykonywanie programu.
-//
-
+﻿
 #include "pch.h"
 #include "Array.h"
+#include "TwoDirList.h"
+#include "DoubleConectedList.h"
 #include <iostream>
+#include <fstream>
+#include <string>
+
+int loadFromFile(std::fstream &file, Array *testStorage) {	
+	std::string fileName;
+	std::cout << "Podaj nazwe pliku z ktorego chcesz wczytac dane: ";
+	std::cin >> fileName;
+	std::string  dataRow;
+	file.open(fileName, std::ios::in);	//fileName = data_in.txt
+	if (file.good() == true) {
+		getline(file, dataRow);
+		std::cout << "Poprawny odczyt z pliku\n";
+		int numberOfData = std::stoi(dataRow);
+		for (int i = 0; i < numberOfData; i++) {
+			getline(file, dataRow);
+			(*testStorage).append(std::stoi(dataRow));
+		}
+		file.close();
+		return std::stoi(dataRow);
+	}
+	else {
+		std::cout << "Nieudany odczyt z pliku\n";
+	}
+	return 0;
+}
 
 int main()
 {
-    std::cout << "Hello World!\n";
-	Array testArray;
-	testArray.removeTail();
-	testArray.display();
-	testArray.addHead(4);
-	testArray.addHead(78);
-	testArray.addHead(456);
-	testArray.addTail(13803);
-	testArray.addHead(12);
-	testArray.addTail(79);
-	testArray.display();
-	testArray.removeHead();
-	testArray.display();
-	testArray.removeHead();
-	testArray.display();
-	testArray.removeTail();
-	testArray.display();
-	testArray.addPos(13, 3);
-	testArray.display();
-	testArray.addPos(0,2);
-	testArray.display();
-	testArray.addPos(90, 1);
-	testArray.display();
-	testArray.addPos(90, 7);
-	testArray.display();
-	testArray.addPos(90, 5);
-	testArray.display();
-	std::cout << testArray.getNumb(5) << std::endl;
-	testArray.removePos(0);
-	testArray.display();
-	int x = 0;
-	std::cin >> x;
-	if (testArray.searchNumb(x)) {
-		std::cout << "TRUE\n";
-	}
-	else {
-		std::cout << "FALSE\n";
-	}
-	testArray.display();
-	Array randArray;
-	randArray.createRand(30);
-	randArray.display();
+	std::cout << "Hello World!\n";
+	DoubleConectedList testList;
+	testList.addPos(13803, 0);
+	testList.display();
+	testList.addTail(1);
+	testList.display();
+	testList.addTail(2);
+	testList.removeTail();
+	testList.display();
+	testList.displayN();
+	testList.addTail(3);	
+	testList.display();
+	testList.addTail(4);
+	testList.addPos(6969,5);
+	testList.display();
+	testList.addTail(5);
+	testList.display();
+	testList.displayN();
+	testList.addPos(13803, 0);
+	testList.removePos(6);
+	testList.display();
+	if (testList.searchNumb(2))
+		std::cout << "true";
+	std::cout << testList.getNumb(4);
 }

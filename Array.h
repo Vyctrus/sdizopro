@@ -1,6 +1,7 @@
 #pragma once
 class Array
 {
+
 private:
 	int* myArray;
 	int size;
@@ -13,6 +14,7 @@ public:
 	void removeHead();	//usun na poczatku //OK
 	void removeTail();	//usun na koncu //OK
 	void removePos(int numbPos);	//usun z pozycji	//OK
+	void append(int addNumb);
 
 	bool searchNumb(int numbWanted);//wyszukanie elementu //Bool zawiera, nie zawiera, nie zwraca adressu gdzie, nie zwraca ilosci: ile?
 	int getNumb(int numbPos);	//pozyskanie elementu z pozycji	//chyba OK

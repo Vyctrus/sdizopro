@@ -43,7 +43,7 @@ void Array::addTail(int addNumb)	//OK
 	//tablica zostala zainicjowana juz wczesniej
 	size++;
 	int *tempArray = new int[size];
-	for (int i = 0; i < size - 1; i++) {	//kazda na pozycje o 1 wieksza
+	for (int i = 0; i < size - 1; i++) {
 		tempArray[i] = myArray[i];	//pierwsza zmiana t[0]=t[0], ostatnia  t[size-2]=t[size-2]
 	}
 	tempArray[size-1] = addNumb;
@@ -134,6 +134,11 @@ void Array::removePos(int numbPos)
 	delete[] myArray;
 	myArray = tempArray;
 	return;
+}
+
+void Array::append(int addNumb)
+{
+	addTail(addNumb);
 }
 
 bool Array::searchNumb(int numbWanted)
