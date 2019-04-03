@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "DoubleConectedList.h"
 #include <iostream>
+#include <fstream>
 
 DoubleConectedList::DoubleConectedList()
 {
@@ -11,7 +12,14 @@ DoubleConectedList::DoubleConectedList()
 
 DoubleConectedList::~DoubleConectedList()
 {
+	listElement *iter = back;
+	for (int i = 0; i < size; i++) {
+		//std::cout << iter->value << " ";
+		removeTail();
+	}
+
 }
+
 
 void DoubleConectedList::addHead(int addNumb)
 {
@@ -88,6 +96,8 @@ void DoubleConectedList::removeHead()
 		return;
 	}
 	if (size == 1) {
+		delete front;//nowe
+		delete back;
 		front = NULL;
 		back = NULL;
 		--size;
@@ -95,7 +105,9 @@ void DoubleConectedList::removeHead()
 	}
 	front->previous->next = front->next;	//previous->next to to samo tutaj co back->next
 	front->next->previous = front->previous;
-	front = front->next;
+	
+	delete front;
+	front = back->next;//front->next;
 	--size;
 }
 
@@ -105,6 +117,8 @@ void DoubleConectedList::removeTail()
 		return;
 	}
 	if (size == 1) {
+		delete front;//nowe
+		delete back;
 		front = NULL;
 		back = NULL;
 		--size;
@@ -113,7 +127,8 @@ void DoubleConectedList::removeTail()
 
 	back->previous->next = back->next;
 	back->next->previous = back->previous;
-	back = back->previous;
+	delete back;
+	back = front->previous;//back->previous;
 	--size;
 }
 
@@ -123,6 +138,8 @@ void DoubleConectedList::removePos(int numbPos)
 		return;
 	}
 	if (size == 1) {
+		delete front;
+		delete back;
 		front = NULL;
 		back = NULL;
 		--size;
@@ -136,15 +153,28 @@ void DoubleConectedList::removePos(int numbPos)
 		removeTail();
 		return;
 	}
+
 	listElement * iter = front;
 	for (int i = 0; i < numbPos; i++) {
 		iter = iter->next;
 	}
-
 	iter->previous->next = iter->next;
 	iter->next->previous = iter->previous;
-	//iter = iter->previous;
+	delete iter;
 	--size;
+}
+
+void DoubleConectedList::removeValue(int numbValue)
+{
+	listElement* iter = front;
+	for (int i = 0; i < size; i++) {
+		if (iter->value == numbValue) {
+			removePos(i);
+			return;
+		}
+		iter = iter->next;
+	}
+	return;
 }
 
 void DoubleConectedList::append(int addNumb)
@@ -157,10 +187,12 @@ bool DoubleConectedList::searchNumb(int numbWanted)
 	listElement* iter = front;
 	for (int i = 0; i < size; i++) {
 		if (iter->value == numbWanted) {
+			//std::cout << numbWanted << " -liczba jest w strukturze\n";
 			return true;
 		}
 		iter = iter->next;
 	}
+	//std::cout << numbWanted << " -liczba nie ma w strukturze\n";
 	return false;
 }
 
@@ -190,6 +222,13 @@ void DoubleConectedList::display()
 		iter = iter->next;
 	}
 	std::cout << std::endl;
+	iter = back;
+	for (int i = 0; i < size; i++) {
+		std::cout << iter->value << " ";
+		iter = iter->previous;
+	}
+	std::cout << std::endl;
+	
 }
 
 void DoubleConectedList::displayN()// wyswietlanie od tylu
@@ -202,9 +241,33 @@ void DoubleConectedList::displayN()// wyswietlanie od tylu
 	std::cout << std::endl;
 }
 
+void DoubleConectedList::loadFromFile(string fileName, DoubleConectedList * loadedList)
+{
+	std::fstream file;
+	std::string  dataRow;
+	file.open(fileName, std::ios::in);	//fileName = data_in.txt
+	if (file.good() == true) {
+		getline(file, dataRow);
+		std::cout << "Poprawny odczyt z pliku\n";
+		int numberOfData = std::stoi(dataRow);
+		for (int i = 0; i < numberOfData; i++) {
+			getline(file, dataRow);
+			loadedList->append(std::stoi(dataRow));
+		}
+		file.close();
+		return;//std::fstream &file
+	}
+	else {
+		std::cout << "Nieudany odczyt z pliku\n";
+	}
+	return;
+}
+
 void DoubleConectedList::createRand(int sizeOfArray)
 {
 	for (int i = 0; i < sizeOfArray; i++) {
 		addHead(rand());	//tutaj mozna dac rand() % maksymalna liczba
 	}
 }
+
+

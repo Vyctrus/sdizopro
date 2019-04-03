@@ -1,4 +1,8 @@
 #pragma once
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
 class Array
 {
 
@@ -15,13 +19,13 @@ public:
 	void removeTail();	//usun na koncu //OK
 	void removePos(int numbPos);	//usun z pozycji	//OK
 	void append(int addNumb);
-
+	static void loadFromFile(string fileName, Array * loadedArray);
 	bool searchNumb(int numbWanted);//wyszukanie elementu //Bool zawiera, nie zawiera, nie zwraca adressu gdzie, nie zwraca ilosci: ile?
 	int getNumb(int numbPos);	//pozyskanie elementu z pozycji	//chyba OK
 
 	void display();	//wyswietl na ekran	//OK
 
 	void createRand(int sizeOfArray);	//utworzenie randomowo wygenerowanej talbicy
-
+	void testFile(string fileName, Array * loadedArray);
 };
 

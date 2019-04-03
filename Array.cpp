@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "Array.h"
+#include <string>
+#include <fstream>
 #include <iostream>
+using namespace std;
 
 Array::Array()
 {
@@ -141,13 +144,38 @@ void Array::append(int addNumb)
 	addTail(addNumb);
 }
 
+void Array::loadFromFile(string fileName, Array  * loadedArray)
+{
+	std::fstream file;
+	std::string  dataRow;
+	file.open(fileName, std::ios::in);	//fileName = data_in.txt
+	if (file.good() == true) {
+		getline(file, dataRow);
+		std::cout << "Poprawny odczyt z pliku\n";
+		int numberOfData = std::stoi(dataRow);
+		for (int i = 0; i < numberOfData; i++) {
+			getline(file, dataRow);
+			loadedArray->append(std::stoi(dataRow));
+		}
+		file.close();
+		return ;//std::fstream &file
+	}
+	else {
+		std::cout << "Nieudany odczyt z pliku\n";
+	}
+	return ;
+}
+
+
 bool Array::searchNumb(int numbWanted)
 {
 	for (int i = 0; i < size; i++) {
 		if (numbWanted == myArray[i]) {
+			//std::cout << numbWanted << " -liczba jest w strukturze\n";
 			return true;
 		}
 	}
+	//std::cout << numbWanted << " -liczby nie ma w strukturze\n";
 	return false;
 }
 
@@ -171,3 +199,27 @@ void Array::createRand(int sizeOfArray)	//mozna dodac paramter maksymalna liczba
 		addHead(rand());	//tutaj mozna dac rand() % maksymalna liczba
 	}
 }
+
+void Array::testFile(string fileName, Array  * loadedArray)
+{
+	std::fstream file;
+	std::string  dataRow;
+	file.open(fileName, std::ios::in);	//fileName = data_in.txt
+	if (file.good() == true) {
+		getline(file, dataRow);
+		//std::cout << "Poprawny odczyt z pliku\n";
+		int numberOfData = std::stoi(dataRow);
+		for (int i = 0; i < numberOfData; i++) {
+			getline(file, dataRow);
+			//loadedArray->append(std::stoi(dataRow));
+			loadedArray->addHead(std::stoi(dataRow));
+		}
+		file.close();
+		return;//std::fstream &file
+	}
+	else {
+		std::cout << "Nieudany odczyt z pliku\n";
+	}
+	return;
+}
+
